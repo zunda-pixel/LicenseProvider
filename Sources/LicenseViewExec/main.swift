@@ -6,7 +6,8 @@ func generateSourceCode(packages: [WorkSpacePackage: String]) -> String {
     name: "\($0.key.name)",
     location: URL(string: "\($0.key.location)")!,
     license: \"""
-    \($0.value)\"""
+    \($0.value)
+\"""
   )
 """
   }
