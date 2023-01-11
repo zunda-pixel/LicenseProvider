@@ -8,6 +8,8 @@ import AttributedText
 struct LicenseCell: View {
   let package: Package
   
+  @Environment(\.openURL) var openURL
+  
   var body: some View {
     NavigationLink(package.name) {
       ScrollView {
@@ -17,7 +19,11 @@ struct LicenseCell: View {
         .navigationTitle(package.name)
         .toolbar {
           ToolbarItem {
-            ShareLink(item: package.location)
+            Button {
+              openURL(package.location)
+            } label: {
+              Image(systemName: "safari")
+            }
           }
         }
     }
