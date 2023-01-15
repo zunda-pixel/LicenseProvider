@@ -6,26 +6,25 @@ import SwiftUI
 import AttributedText
 
 struct LicenseCell: View {
-  let package: Package
+  let package: PackageModel
   
   @Environment(\.openURL) var openURL
   
   var body: some View {
-    NavigationLink(package.name) {
-      ScrollView {
-        AttributedText(text: package.license)
-          .font(.caption)
-      }
-        .navigationTitle(package.name)
-        .toolbar {
-          ToolbarItem {
-            Button {
-              openURL(package.location)
-            } label: {
-              Image(systemName: "safari")
-            }
-          }
+    ScrollView {
+      AttributedText(text: package.license)
+        .font(.caption)
+        .frame(maxWidth: .infinity)
+    }
+    .navigationTitle(package.name)
+    .toolbar {
+      ToolbarItem {
+        Button {
+          openURL(package.location)
+        } label: {
+          Image(systemName: "safari")
         }
+      }
     }
   }
 }

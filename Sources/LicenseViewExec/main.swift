@@ -14,24 +14,15 @@ func generateSourceCode(packages: [WorkSpacePackage: String]) -> String {
   
   let sourceCode = """
 import Foundation
-
-struct Package: Hashable, Identifiable {
-  let id = UUID()
-  let name: String
-  let location: URL
-  let license: String
-}
   
 enum LicenseList: CaseIterable {
-  static let packages: [Package] = [
+  static let packages: [PackageModel] = [
     \(workspaceInits.joined(separator: ",\n"))
   ]
 }
 """
   return sourceCode
 }
-
-let date = Date()
 
 let sourcePackagesPath = URL(fileURLWithPath: CommandLine.arguments[2])
 

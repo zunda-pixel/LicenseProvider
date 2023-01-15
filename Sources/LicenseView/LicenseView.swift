@@ -8,8 +8,10 @@ public struct LicenseView: View {
   public init() {}
   
   public var body: some View {
-    List(LicenseList.packages) { packages in
-      LicenseCell(package: packages)
+    List(LicenseList.packages) { package in
+      NavigationLink(package.name) {
+        LicenseCell(package: package)
+      }
     }
   }
 }
