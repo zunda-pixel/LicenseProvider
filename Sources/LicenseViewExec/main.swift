@@ -1,7 +1,7 @@
 import Foundation
 
 func generateSourceCode(packages: [WorkSpacePackage: String]) -> String {
-  let workspaceInits = packages.map { """
+  let workspaceInits = packages.sorted(by: \.key.name).map { """
   .init(
     name: "\($0.key.name)",
     location: URL(string: "\($0.key.location)")!,
@@ -53,3 +53,14 @@ let outputFilePath = URL(fileURLWithPath: CommandLine.arguments[1])
 
 try sourceCodeData.write(to: outputFilePath)
 
+
+extension Sequence {
+  func sorted<T: Comparable>(by keyPath: KeyPath<Element, T>, isAscending: Bool = true) -> [Element]
+  {
+    return sorted {
+      let lhs = $0[keyPath: keyPath]
+      let rhs = $1[keyPath: keyPath]
+      return isAscending ? lhs < rhs : lhs > rhs
+    }
+  }
+}
