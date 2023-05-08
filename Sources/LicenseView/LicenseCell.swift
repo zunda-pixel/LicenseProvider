@@ -6,7 +6,7 @@ import SwiftUI
 import AttributedText
 
 struct LicenseCell: View {
-  let package: PackageModel
+  let package: Package
   
   @Environment(\.openURL) var openURL
   
