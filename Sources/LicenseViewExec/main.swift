@@ -20,6 +20,13 @@ enum LicenseList: CaseIterable {
     \(workspaceInits.joined(separator: ",\n"))
   ]
 }
+
+struct PackageModel: Hashable, Identifiable {
+  let id = UUID()
+  let name: String
+  let location: URL
+  let license: String
+}
 """
   return sourceCode
 }
