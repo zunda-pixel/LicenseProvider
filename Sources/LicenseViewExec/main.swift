@@ -16,12 +16,12 @@ func generateSourceCode(packages: [WorkSpacePackage: String]) -> String {
 import Foundation
   
 enum LicenseList: CaseIterable {
-  static let packages: [PackageModel] = [
+  static let packages: [Package] = [
     \(workspaceInits.joined(separator: ",\n"))
   ]
 }
 
-struct PackageModel: Hashable, Identifiable {
+struct Package: Hashable, Identifiable {
   let id = UUID()
   let name: String
   let location: URL
