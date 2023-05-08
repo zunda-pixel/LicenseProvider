@@ -19,18 +19,20 @@ struct LicenseViewPlugin {
     return workDirectory
   }
   
-  func buildCommands(executablePath: Path, workDirectory: Path) -> Command {
+  func buildCommands(executablePath: Path, workDirectory: Path) -> Command? {
     let fileName = "LicenseList.swift"
     
     let output = workDirectory.appending(fileName)
-    let sourcePackages = sourcePackagesPath(workDirectory: workDirectory)
+    guard let sourcePackages = sourcePackagesPath(workDirectory: workDirectory) else {
+      return nil
+    }
     
     return .buildCommand(
       displayName: "LicenseViewPlugin",
       executable: executablePath,
       arguments: [
         output.string,
-        sourcePackages!.string
+        sourcePackages.string
       ],
       outputFiles: [ output ]
     )
@@ -41,7 +43,14 @@ extension LicenseViewPlugin: BuildToolPlugin {
   func createBuildCommands(context: PluginContext, target: Target) async throws -> [Command] {
     let executablePath = try context.tool(named: LicenseViewPlugin.commandName).path
     
-    return [ buildCommands(executablePath: executablePath, workDirectory: context.pluginWorkDirectory) ]
+    guard let command = buildCommands(
+      executablePath: executablePath,
+      workDirectory: context.pluginWorkDirectory
+    ) else {
+      return []
+    }
+    
+    return [command]
   }
 }
 
@@ -52,7 +61,14 @@ extension LicenseViewPlugin: XcodeBuildToolPlugin {
   func createBuildCommands(context: XcodePluginContext, target: XcodeTarget) throws -> [Command] {
     let executablePath = try context.tool(named: LicenseViewPlugin.commandName).path
     
-    return [ buildCommands(executablePath: executablePath, workDirectory: context.pluginWorkDirectory) ]
+    guard let command = buildCommands(
+      executablePath: executablePath,
+      workDirectory: context.pluginWorkDirectory
+    ) else {
+      return []
+    }
+    
+    return [command]
   }
 }
 #endif
