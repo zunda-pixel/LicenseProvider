@@ -11,7 +11,11 @@ let package = Package(
     .library(
       name: "LicenseView",
       targets: ["LicenseView"]
-    )
+    ),
+    .plugin(
+      name: "LicenseViewPlugin",
+      targets: ["LicenseViewPlugin"]
+    ),
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
