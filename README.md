@@ -12,17 +12,44 @@ Generate LicenseView that Project depends on.
 </div>
 
 ```swift
-import SwiftUI
-import LicenseView
+// Package.swift
+let package = Package(
+  name: "SampleKit",
+  products: [
+    .library(
+      name: "SampleKit",
+      targets: ["SampleKit"]
+    )
+  ],
+  targets: [
+    .target(
+      name: "SampleKit",
+      plugins: [
+        .plugin(name: "LicenseProviderPlugin", package: "LicenseProvider"),
+      ]
+    )
+  ]
+)
+```
 
-struct ContentView: View {
-    var body: some View {
-      NavigationStack {
-        NavigationLink("License") {
-          LicenseView()
-            .navigationTitle("License")
+```swift
+import SwiftUI
+
+struct LicenseView: View {
+  var body: some View {
+    NavigationStack {
+      List {
+        ForEach(LicenseProvider.packages) { package in
+          NavigationLink(package.name) {
+            VStack {
+              Link("URL", destination: package.location)
+              Text(package.license)
+            }
+            .navigationTitle(package.name)
+          }
         }
       }
     }
+  }
 }
 ```
