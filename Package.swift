@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
   name: "LicenseView",
-  platforms: [.macOS(.v13), .iOS(.v16), .tvOS(.v16), .watchOS(.v9)],
+  platforms: [.macOS(.v13), .iOS(.v16), .tvOS(.v16), .watchOS(.v9), .macCatalyst(.v16)],
   products: [
     .plugin(
       name: "LicenseViewPlugin",
