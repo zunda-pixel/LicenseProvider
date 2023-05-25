@@ -4,25 +4,25 @@
 import PackageDescription
 
 let package = Package(
-  name: "LicenseView",
+  name: "LicenseProvider",
   platforms: [.macOS(.v13), .iOS(.v16), .tvOS(.v16), .watchOS(.v9), .macCatalyst(.v16)],
   products: [
     .plugin(
-      name: "LicenseViewPlugin",
-      targets: ["LicenseViewPlugin"]
+      name: "LicenseProviderPlugin",
+      targets: ["LicenseProviderPlugin"]
     ),
   ],
   dependencies: [
   ],
   targets: [
     .executableTarget(
-      name: "LicenseViewExec"
+      name: "LicenseProviderExec"
     ),
     .plugin(
-      name: "LicenseViewPlugin",
+      name: "LicenseProviderPlugin",
       capability: .buildTool(),
       dependencies: [
-        .target(name: "LicenseViewExec")
+        .target(name: "LicenseProviderExec")
       ]
     )
   ]

@@ -3,7 +3,7 @@ import Foundation
 
 @main
 struct LicenseViewPlugin {
-  static let commandName = "LicenseViewExec"
+  static let commandName = "LicenseProviderExec"
   
   func sourcePackagesPath(workDirectory: Path) -> Path? {
     var workDirectory = workDirectory
@@ -20,7 +20,7 @@ struct LicenseViewPlugin {
   }
   
   func buildCommands(executablePath: Path, workDirectory: Path) -> Command? {
-    let fileName = "LicenseList.swift"
+    let fileName = "LicenseProvider.swift"
     
     let output = workDirectory.appending(fileName)
     guard let sourcePackages = sourcePackagesPath(workDirectory: workDirectory) else {
@@ -28,7 +28,7 @@ struct LicenseViewPlugin {
     }
     
     return .buildCommand(
-      displayName: "LicenseViewPlugin",
+      displayName: "LicenseProviderPlugin",
       executable: executablePath,
       arguments: [
         output.string,

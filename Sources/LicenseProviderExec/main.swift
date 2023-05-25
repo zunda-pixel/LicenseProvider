@@ -15,7 +15,7 @@ func generateSourceCode(packages: [WorkSpacePackage: String]) -> String {
   let sourceCode = """
 import Foundation
   
-enum LicenseList: CaseIterable {
+enum LicenseProvider {
   static let packages: [Package] = [
     \(workspaceInits.joined(separator: ",\n"))
   ]
