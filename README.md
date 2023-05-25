@@ -1,6 +1,6 @@
-# LicenseView
+# LicensePlugin
 
-Generate LicenseView that Project depends on.
+Generate LicensePlugin that Project depends on.
 
 <img src="https://img.shields.io/badge/Swift-5.7-orange" alt="Support Swift 5.7" /> <a href="https://github.com/apple/swift-package-manager" alt="HTTPClient on Swift Package Manager" title="HTTPClient on Swift Package Manager"><img src="https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg" /></a>
 
