@@ -49,12 +49,12 @@ for  package in workspace.packages {
   if let content = contents.first {
     let fileData = try Data(contentsOf: content)
     
-    packages[package] = String(data: fileData, encoding: .utf8)!
+    packages[package] = String(decoding: fileData, as: UTF8.self)
   }
 }
 
 let sourceCode = generateSourceCode(packages: packages)
-let sourceCodeData = sourceCode.data(using: .utf8)!
+let sourceCodeData = Data(sourceCode.utf8)
 
 let outputFilePath = URL(fileURLWithPath: CommandLine.arguments[1])
 
