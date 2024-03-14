@@ -33,13 +33,13 @@ struct Package: Hashable, Identifiable {
 
 let sourcePackagesPath = URL(fileURLWithPath: CommandLine.arguments[2])
 
-let jsonData = try Data(contentsOf: sourcePackagesPath.appending(path: "workspace-state.json"))
+let jsonData = try Data(contentsOf: sourcePackagesPath.appendingPathComponent("workspace-state.json"))
 let workspace = try JSONDecoder().decode(WorkSpace.self, from: jsonData)
 
 var packages: [WorkSpacePackage: String] = [:]
 
 for  package in workspace.packages {
-  let subPath = sourcePackagesPath.appending(path: "checkouts").appending(path: package.subPath)
+  let subPath = sourcePackagesPath.appendingPathComponent("checkouts").appendingPathComponent(package.subPath)
   let contents = try FileManager.default.contentsOfDirectory(at: subPath, includingPropertiesForKeys: nil).filter { path in
     let pathWithoutExtension = path.deletingPathExtension()
     
