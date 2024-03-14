@@ -5,14 +5,20 @@ import PackageDescription
 
 let package = Package(
   name: "LicenseProvider",
-  platforms: [.macOS(.v13), .iOS(.v16), .tvOS(.v16), .watchOS(.v9), .macCatalyst(.v16)],
+  platforms: [
+    .macOS(.v11),
+    .iOS(.v12),
+    .tvOS(.v12),
+    .watchOS(.v4),
+    .macCatalyst(.v13),
+  ],
   products: [
     .plugin(
       name: "LicenseProviderPlugin",
-      targets: ["LicenseProviderPlugin"]
+      targets: [
+        "LicenseProviderPlugin",
+      ]
     ),
-  ],
-  dependencies: [
   ],
   targets: [
     .executableTarget(
