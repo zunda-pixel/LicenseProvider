@@ -5,24 +5,24 @@ import Foundation
 struct LicenseViewPlugin {
   static let commandName = "LicenseProviderExec"
   
-  func sourcePackagesPath(workDirectory: Path) -> Path? {
+  func sourcePackagesPath(workDirectory: URL) -> URL? {
     var workDirectory = workDirectory
     
-    guard workDirectory.string.contains("SourcePackages") else {
+    guard workDirectory.absoluteString.contains("SourcePackages") else {
       return nil
     }
     
-    while workDirectory.lastComponent != "SourcePackages" {
-      workDirectory = workDirectory.removingLastComponent()
+    while workDirectory.lastPathComponent != "SourcePackages" {
+      workDirectory = workDirectory.deletingLastPathComponent()
     }
     
     return workDirectory
   }
   
-  func buildCommands(executablePath: Path, workDirectory: Path) -> Command? {
+  func buildCommands(executablePath: URL, workDirectory: URL) -> Command? {
     let fileName = "LicenseProvider.swift"
     
-    let output = workDirectory.appending(fileName)
+    let output = workDirectory.appending(path: fileName)
     guard let sourcePackages = sourcePackagesPath(workDirectory: workDirectory) else {
       return nil
     }
@@ -31,8 +31,8 @@ struct LicenseViewPlugin {
       displayName: "LicenseProviderPlugin",
       executable: executablePath,
       arguments: [
-        output.string,
-        sourcePackages.string
+        output.absoluteString,
+        sourcePackages.absoluteString
       ],
       outputFiles: [ output ]
     )
@@ -41,11 +41,11 @@ struct LicenseViewPlugin {
 
 extension LicenseViewPlugin: BuildToolPlugin {
   func createBuildCommands(context: PluginContext, target: Target) async throws -> [Command] {
-    let executablePath = try context.tool(named: LicenseViewPlugin.commandName).path
+    let executablePath = try context.tool(named: LicenseViewPlugin.commandName).url
     
     guard let command = buildCommands(
       executablePath: executablePath,
-      workDirectory: context.pluginWorkDirectory
+      workDirectory: context.pluginWorkDirectoryURL
     ) else {
       return []
     }
@@ -59,11 +59,11 @@ import XcodeProjectPlugin
 
 extension LicenseViewPlugin: XcodeBuildToolPlugin {
   func createBuildCommands(context: XcodePluginContext, target: XcodeTarget) throws -> [Command] {
-    let executablePath = try context.tool(named: LicenseViewPlugin.commandName).path
+    let executablePath = try context.tool(named: LicenseViewPlugin.commandName).url
     
     guard let command = buildCommands(
       executablePath: executablePath,
-      workDirectory: context.pluginWorkDirectory
+      workDirectory: context.pluginWorkDirectoryURL
     ) else {
       return []
     }
