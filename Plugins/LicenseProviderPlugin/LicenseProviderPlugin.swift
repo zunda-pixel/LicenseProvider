@@ -31,8 +31,8 @@ struct LicenseViewPlugin {
       displayName: "LicenseProviderPlugin",
       executable: executablePath,
       arguments: [
-        output.absoluteString,
-        sourcePackages.absoluteString
+        output.path(),
+        sourcePackages.path()
       ],
       outputFiles: [ output ]
     )
