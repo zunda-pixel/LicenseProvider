@@ -19,6 +19,9 @@ let package = Package(
       targets: ["SampleKit"]
     )
   ],
+  dependencies: [
+    .package(url: "https://github.com/zunda-pixel/LicenseProvider", from: "1.2.2"),
+  ],
   targets: [
     .target(
       name: "SampleKit",
