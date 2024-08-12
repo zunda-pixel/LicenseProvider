@@ -2,7 +2,7 @@
 
 Generate License List that Project depends on.
 
-<img src="https://img.shields.io/badge/Swift-5.7-orange" alt="Support Swift 5.7" /> <a href="https://github.com/apple/swift-package-manager" alt="HTTPClient on Swift Package Manager" title="HTTPClient on Swift Package Manager"><img src="https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg" /></a>
+<img src="https://img.shields.io/badge/Swift-6.0-orange" alt="Support Swift 6.0" /> <a href="https://github.com/swiftlang/swift-package-manager" alt="HTTPClient on Swift Package Manager" title="HTTPClient on Swift Package Manager"><img src="https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg" /></a>
 
 <div>
 <img width="250" src="https://user-images.githubusercontent.com/47569369/211776957-57ecef9a-bdff-4ee4-af47-da39c890541a.png" />
