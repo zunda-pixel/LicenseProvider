@@ -10,14 +10,15 @@ let package = Package(
     .tvOS(.v12),
     .watchOS(.v4),
     .macCatalyst(.v13),
+    .visionOS(.v1),
   ],
   products: [
     .plugin(
       name: "LicenseProviderPlugin",
       targets: [
-        "LicenseProviderPlugin",
+        "LicenseProviderPlugin"
       ]
-    ),
+    )
   ],
   targets: [
     .executableTarget(
@@ -29,6 +30,6 @@ let package = Package(
       dependencies: [
         .target(name: "LicenseProviderExec")
       ]
-    )
+    ),
   ]
 )
