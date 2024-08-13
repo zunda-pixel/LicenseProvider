@@ -32,7 +32,7 @@ struct WorkSpacePackage: Decodable, Hashable {
 
     self.name = try container.decode(String.self, forKey: .name)
     self.location = try container.decode(URL.self, forKey: .location)
-    self.kind = try container.decode(Kind.self, forKey: .location)
+    self.kind = try container.decode(Kind.self, forKey: .kind)
   }
 }
 
