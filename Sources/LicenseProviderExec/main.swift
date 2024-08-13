@@ -6,6 +6,7 @@ func generateSourceCode(packages: [WorkSpacePackage: String]) -> String {
       .init(
         name: "\($0.key.name)",
         location: URL(string: "\($0.key.location)")!,
+        kind: .\($0.key.kind),
         license: \"""
         \($0.value)
     \"""
@@ -16,17 +17,27 @@ func generateSourceCode(packages: [WorkSpacePackage: String]) -> String {
   let sourceCode = """
     import Foundation
       
-    enum LicenseProvider {
+    enum LicenseProvider: Sendable, Hashable {
       static let packages: [Package] = [
         \(workspaceInits.joined(separator: ",\n"))
       ]
     }
 
-    struct Package: Hashable, Identifiable {
+    struct Package: Sendable, Hashable, Identifiable {
       let id = UUID()
       let name: String
       let location: URL
+      let kind: Kind
       let license: String
+    }
+    
+    extension Package {
+      enum Kind: String, Sendable, Hashable {
+        case remoteSourceControl
+        case localSourceControl
+        case fileSystem
+        case registry
+      }
     }
     """
   return sourceCode
