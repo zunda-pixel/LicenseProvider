@@ -41,5 +41,6 @@ extension WorkSpacePackage {
     case remoteSourceControl
     case localSourceControl
     case fileSystem
+    case registry
   }
 }
