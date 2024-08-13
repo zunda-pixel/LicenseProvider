@@ -1,12 +1,24 @@
 import Foundation
 
+func generateKindInitializer(kind: WorkSpacePackage.Kind) -> String {
+  switch kind {
+  case .fileSystem(let location):
+    return ".fileSystem(location: URL(string: \"\(location.absoluteString)\")!)"
+  case .localSourceControl(let location):
+    return ".localSourceControl(location: URL(string: \"\(location.absoluteString)\")!)"
+  case .remoteSourceControl(let location):
+    return ".remoteSourceControl(location: URL(string: \"\(location.absoluteString)\")!)"
+  case .registry:
+    return ".registry"
+  }
+}
+
 func generateSourceCode(packages: [WorkSpacePackage: String]) -> String {
   let workspaceInits = packages.sorted(by: \.key.name).map {
     """
       .init(
         name: "\($0.key.name)",
-        location: URL(string: "\($0.key.location)")!,
-        kind: .\($0.key.kind),
+        kind: .\(generateKindInitializer(kind: $0.key.kind)),
         license: \"""
         \($0.value)
     \"""
@@ -32,10 +44,10 @@ func generateSourceCode(packages: [WorkSpacePackage: String]) -> String {
     }
     
     extension Package {
-      enum Kind: String, Sendable, Hashable {
-        case remoteSourceControl
-        case localSourceControl
-        case fileSystem
+      enum Kind: Sendable, Hashable {
+        case remoteSourceControl(location: URL)
+        case localSourceControl(location: URL)
+        case fileSystem(location: URL)
         case registry
       }
     }
@@ -53,8 +65,8 @@ var packages: [WorkSpacePackage: String] = [:]
 
 for package in workspace.packages {
   let subPath: URL? = switch package.kind {
-  case .localSourceControl, .fileSystem:
-    package.location
+  case .localSourceControl(let location), .fileSystem(let location):
+    location
   case .remoteSourceControl:
     sourcePackagesPath
       .appendingPathComponent("checkouts")
