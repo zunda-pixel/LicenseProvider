@@ -18,7 +18,7 @@ func generateSourceCode(packages: [WorkSpacePackage: String]) -> String {
     """
       .init(
         name: "\($0.key.name)",
-        kind: .\(generateKindInitializer(kind: $0.key.kind)),
+        kind: \(generateKindInitializer(kind: $0.key.kind)),
         license: \"""
         \($0.value)
     \"""
