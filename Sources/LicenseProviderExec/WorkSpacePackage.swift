@@ -39,6 +39,7 @@ struct WorkSpacePackage: Decodable, Hashable {
 extension WorkSpacePackage {
   enum Kind: String, Decodable {
     case remoteSourceControl
+    case localSourceControl
     case fileSystem
   }
 }

@@ -42,7 +42,7 @@ var packages: [WorkSpacePackage: String] = [:]
 
 for package in workspace.packages {
   let subPath: URL = switch package.kind {
-  case .fileSystem:
+  case .localSourceControl, .fileSystem:
     package.location
   case .remoteSourceControl:
     sourcePackagesPath
