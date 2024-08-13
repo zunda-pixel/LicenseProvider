@@ -20,7 +20,7 @@ let package = Package(
     )
   ],
   dependencies: [
-    .package(url: "https://github.com/zunda-pixel/LicenseProvider", from: "1.2.2"),
+    .package(url: "https://github.com/zunda-pixel/LicenseProvider", from: "1.3.1"),
   ],
   targets: [
     .target(
@@ -43,7 +43,9 @@ struct LicenseView: View {
         ForEach(LicenseProvider.packages) { package in
           NavigationLink(package.name) {
             VStack {
-              Link("URL", destination: package.location)
+              if package.kind == .remoteSourceControl {
+                Link("URL", destination: package.location)
+              }
               Text(package.license)
             }
             .navigationTitle(package.name)
