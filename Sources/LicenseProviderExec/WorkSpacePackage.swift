@@ -8,6 +8,7 @@ struct WorkSpacePackage: Decodable, Hashable {
   let name: String
   let location: URL
   let subPath: String
+  let kind: Kind
 
   enum PackageRefCodingKeys: CodingKey {
     case packageRef
@@ -17,6 +18,7 @@ struct WorkSpacePackage: Decodable, Hashable {
   enum CodingKeys: CodingKey {
     case name
     case location
+    case kind
   }
 
   init(from decoder: Decoder) throws {
@@ -30,5 +32,13 @@ struct WorkSpacePackage: Decodable, Hashable {
 
     self.name = try container.decode(String.self, forKey: .name)
     self.location = try container.decode(URL.self, forKey: .location)
+    self.kind = try container.decode(Kind.self, forKey: .location)
+  }
+}
+
+extension WorkSpacePackage {
+  enum Kind: String, Decodable {
+    case remoteSourceControl
+    case fileSystem
   }
 }
