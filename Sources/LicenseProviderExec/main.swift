@@ -38,7 +38,6 @@ func generateSourceCode(packages: [WorkSpacePackage: String]) -> String {
     struct Package: Sendable, Hashable, Identifiable {
       let id = UUID()
       let name: String
-      let location: URL
       let kind: Kind
       let license: String
     }
