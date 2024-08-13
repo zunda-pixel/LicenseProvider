@@ -41,8 +41,15 @@ let workspace = try JSONDecoder().decode(WorkSpace.self, from: jsonData)
 var packages: [WorkSpacePackage: String] = [:]
 
 for package in workspace.packages {
-  let subPath = sourcePackagesPath.appendingPathComponent("checkouts").appendingPathComponent(
-    package.subPath)
+  let subPath: URL = switch package.kind {
+  case .fileSystem:
+    package.location
+  case .remoteSourceControl:
+    sourcePackagesPath
+      .appendingPathComponent("checkouts")
+      .appendingPathComponent(package.subPath)
+  }
+
   let contents = try FileManager.default.contentsOfDirectory(
     at: subPath, includingPropertiesForKeys: nil
   ).filter { path in
