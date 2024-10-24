@@ -30,7 +30,7 @@ func generateSourceCode(packages: [WorkSpacePackage: String]) -> String {
       let kind: Kind
       let license: String
     }
-    
+
     extension Package {
       enum Kind: String, Sendable, Hashable {
         case remoteSourceControl
@@ -52,16 +52,17 @@ let workspace = try JSONDecoder().decode(WorkSpace.self, from: jsonData)
 var packages: [WorkSpacePackage: String] = [:]
 
 for package in workspace.packages {
-  let subPath: URL? = switch package.kind {
-  case .localSourceControl, .fileSystem:
-    package.location
-  case .remoteSourceControl:
-    sourcePackagesPath
-      .appendingPathComponent("checkouts")
-      .appendingPathComponent(package.subPath)
-  case .registry:
-    nil
-  }
+  let subPath: URL? =
+    switch package.kind {
+    case .localSourceControl, .fileSystem:
+      package.location
+    case .remoteSourceControl:
+      sourcePackagesPath
+        .appendingPathComponent("checkouts")
+        .appendingPathComponent(package.subPath)
+    case .registry:
+      nil
+    }
 
   guard let subPath else { continue }
 

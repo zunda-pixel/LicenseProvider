@@ -1,8 +1,9 @@
 # LicensePlugin
 
-Generate License List that Project depends on.
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fzunda-pixel%2FLicenseProvider%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/zunda-pixel/LicenseProvider)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fzunda-pixel%2FLicenseProvider%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/zunda-pixel/LicenseProvider)
 
-<img src="https://img.shields.io/badge/Swift-6.0-orange" alt="Support Swift 6.0" /> <a href="https://github.com/swiftlang/swift-package-manager" alt="HTTPClient on Swift Package Manager" title="HTTPClient on Swift Package Manager"><img src="https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg" /></a>
+Generate License List that Project depends on.
 
 <div>
 <img width="250" src="https://user-images.githubusercontent.com/47569369/211776957-57ecef9a-bdff-4ee4-af47-da39c890541a.png" />
