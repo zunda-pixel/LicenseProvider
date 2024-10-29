@@ -5,13 +5,13 @@ on: pull_request
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: swiftlang/swift:nightly-6.0-jammy
+    container: swift:latest
     steps:
     - uses: actions/checkout@v4
     - run: swift build
   lint:
     runs-on: ubuntu-latest
-    container: swiftlang/swift:nightly-6.0-jammy
+    container: swift:latest
     steps:
       - uses: actions/checkout@v4
       - run: swift format lint -r -p -s .
