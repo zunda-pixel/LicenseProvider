@@ -6,7 +6,6 @@ import Foundation
 
 struct WorkSpacePackage: Decodable, Hashable {
   let name: String
-  let location: URL
   let subPath: String
   let kind: Kind
 
@@ -15,7 +14,14 @@ struct WorkSpacePackage: Decodable, Hashable {
     case subpath
   }
 
-  enum CodingKeys: CodingKey {
+  enum RawKind: String, Decodable {
+    case remoteSourceControl
+    case localSourceControl
+    case fileSystem
+    case registry
+  }
+
+  enum PackageCodingKeys: CodingKey {
     case name
     case location
     case kind
@@ -26,21 +32,33 @@ struct WorkSpacePackage: Decodable, Hashable {
 
     self.subPath = try packageContainer.decode(String.self, forKey: .subpath)
     let container = try packageContainer.nestedContainer(
-      keyedBy: CodingKeys.self,
+      keyedBy: PackageCodingKeys.self,
       forKey: .packageRef
     )
 
     self.name = try container.decode(String.self, forKey: .name)
-    self.location = try container.decode(URL.self, forKey: .location)
-    self.kind = try container.decode(Kind.self, forKey: .kind)
+    let rawKind = try container.decode(RawKind.self, forKey: .kind)
+    switch rawKind {
+    case .fileSystem:
+      let location = try container.decode(URL.self, forKey: .location)
+      self.kind = .fileSystem(location: location)
+    case .localSourceControl:
+      let location = try container.decode(URL.self, forKey: .location)
+      self.kind = .localSourceControl(location: location)
+    case .remoteSourceControl:
+      let location = try container.decode(URL.self, forKey: .location)
+      self.kind = .remoteSourceControl(location: location)
+    case .registry:
+      self.kind = .registry
+    }
   }
 }
 
 extension WorkSpacePackage {
-  enum Kind: String, Decodable {
-    case remoteSourceControl
-    case localSourceControl
-    case fileSystem
+  enum Kind: Hashable {
+    case remoteSourceControl(location: URL)
+    case localSourceControl(location: URL)
+    case fileSystem(location: URL)
     case registry
   }
 }
