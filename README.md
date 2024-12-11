@@ -44,8 +44,8 @@ struct LicenseView: View {
         ForEach(LicenseProvider.packages) { package in
           NavigationLink(package.name) {
             VStack {
-              if package.kind == .remoteSourceControl {
-                Link("URL", destination: package.location)
+              if case .remoteSourceControl(let location) = package.kind {
+                Link("URL", destination: location)
               }
               Text(package.license)
             }
