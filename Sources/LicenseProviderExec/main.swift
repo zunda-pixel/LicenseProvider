@@ -64,16 +64,17 @@ var packages: [WorkSpacePackage: String] = [:]
 
 for package in workspace.packages {
 
-  let subPath: URL? = switch package.kind {
-  case .localSourceControl(let location), .fileSystem(let location):
-    location
-  case .remoteSourceControl:
-    sourcePackagesPath
-      .appendingPathComponent("checkouts")
-      .appendingPathComponent(package.subPath)
-  case .registry:
-    nil
-  }
+  let subPath: URL? =
+    switch package.kind {
+    case .localSourceControl(let location), .fileSystem(let location):
+      location
+    case .remoteSourceControl:
+      sourcePackagesPath
+        .appendingPathComponent("checkouts")
+        .appendingPathComponent(package.subPath)
+    case .registry:
+      nil
+    }
 
   guard let subPath else { continue }
 

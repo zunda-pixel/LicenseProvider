@@ -20,7 +20,7 @@ struct WorkSpacePackage: Decodable, Hashable {
     case fileSystem
     case registry
   }
-  
+
   enum PackageCodingKeys: CodingKey {
     case name
     case location
