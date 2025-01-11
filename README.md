@@ -1,4 +1,4 @@
-# LicensePlugin
+# LicenseProvider
 
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fzunda-pixel%2FLicenseProvider%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/zunda-pixel/LicenseProvider)
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fzunda-pixel%2FLicenseProvider%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/zunda-pixel/LicenseProvider)
@@ -13,11 +13,11 @@ Generate License List that Project depends on.
 ```swift
 // Package.swift
 let package = Package(
-  name: "SampleKit",
+  name: "SampleApp",
   products: [
     .library(
-      name: "SampleKit",
-      targets: ["SampleKit"]
+      name: "SampleApp",
+      targets: ["SampleApp"]
     )
   ],
   dependencies: [
@@ -25,7 +25,7 @@ let package = Package(
   ],
   targets: [
     .target(
-      name: "SampleKit",
+      name: "SampleApp",
       plugins: [
         .plugin(name: "LicenseProviderPlugin", package: "LicenseProvider"),
       ]
