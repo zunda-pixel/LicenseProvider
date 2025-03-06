@@ -8,13 +8,11 @@ struct LicenseViewPlugin {
   func sourcePackagesPath(workDirectory: URL) -> URL? {
     var workDirectory = workDirectory
 
-    guard workDirectory.absoluteString.contains("SourcePackages") else {
-      return nil
-    }
-
-    while workDirectory.lastPathComponent != "SourcePackages" {
+    for _ in 0..<6 {
       workDirectory = workDirectory.deletingLastPathComponent()
     }
+
+    workDirectory.appendPathComponent("SourcePackages")
 
     return workDirectory
   }
