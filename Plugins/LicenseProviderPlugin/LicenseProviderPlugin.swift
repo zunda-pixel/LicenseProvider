@@ -20,6 +20,7 @@ struct LicenseViewPlugin {
   }
 
   func buildCommands(executablePath: URL, workDirectory: URL) -> Command? {
+    Diagnostics.error("🍎🍎🍎: \(workDirectory)")
     let fileName = "LicenseProvider.swift"
 
     let output = workDirectory.appending(path: fileName)
