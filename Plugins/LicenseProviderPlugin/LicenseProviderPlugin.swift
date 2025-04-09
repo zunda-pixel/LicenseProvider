@@ -18,7 +18,7 @@ struct LicenseViewPlugin {
     return workDirectory
   }
 
-  func buildCommands(executablePath: URL, workDirectory: URL) -> Command? {
+  func buildCommands(executablePath: URL, workDirectory: URL) -> Command {
     Diagnostics.warning("🍎🍎🍎: \(workDirectory)")
     let fileName = "LicenseProvider.swift"
 
@@ -44,16 +44,12 @@ struct LicenseViewPlugin {
     func createBuildCommands(context: PluginContext, target: Target) async throws -> [Command] {
       let executablePath = try context.tool(named: LicenseViewPlugin.commandName).url
 
-      guard
-        let command = buildCommands(
+      return [
+        buildCommands(
           executablePath: executablePath,
           workDirectory: context.pluginWorkDirectoryURL
         )
-      else {
-        return []
-      }
-
-      return [command]
+      ]
     }
   }
 #endif
@@ -65,16 +61,12 @@ struct LicenseViewPlugin {
     func createBuildCommands(context: XcodePluginContext, target: XcodeTarget) throws -> [Command] {
       let executablePath = try context.tool(named: LicenseViewPlugin.commandName).url
 
-      guard
-        let command = buildCommands(
+      return [
+        buildCommands(
           executablePath: executablePath,
           workDirectory: context.pluginWorkDirectoryURL
         )
-      else {
-        return []
-      }
-
-      return [command]
+      ]
     }
   }
 #endif
