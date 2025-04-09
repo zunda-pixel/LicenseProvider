@@ -7,7 +7,7 @@ import Testing
     "swift-algorithms",
     "swift-async-algorithms",
     "swift-collections",
-    "swift-numerics"
+    "swift-numerics",
   ]
   #expect(Set(packages.map(\.name)) == expectedValues)
 }

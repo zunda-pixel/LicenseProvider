@@ -11,7 +11,9 @@ struct LicenseViewPlugin {
       workDirectory = workDirectory.deletingLastPathComponent()
     }
 
-    if FileManager.default.fileExists(atPath: workDirectory.appendingPathComponent("SourcePackages").path()) {
+    if FileManager.default.fileExists(
+      atPath: workDirectory.appendingPathComponent("SourcePackages").path())
+    {
       workDirectory.appendPathComponent("SourcePackages")
     }
 

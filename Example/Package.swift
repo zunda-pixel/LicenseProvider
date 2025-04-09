@@ -21,8 +21,8 @@ let package = Package(
         .product(name: "Algorithms", package: "swift-algorithms"),
       ],
       plugins: [
-        .plugin(name: "LicenseProviderPlugin", package: "LicenseProvider"),
+        .plugin(name: "LicenseProviderPlugin", package: "LicenseProvider")
       ]
-    ),
+    )
   ]
 )
