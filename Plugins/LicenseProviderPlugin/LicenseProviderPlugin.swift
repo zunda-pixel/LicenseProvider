@@ -1,5 +1,4 @@
 import Foundation
-import PackagePlugin
 
 @main
 struct LicenseViewPlugin {
@@ -38,22 +37,26 @@ struct LicenseViewPlugin {
   }
 }
 
-extension LicenseViewPlugin: BuildToolPlugin {
-  func createBuildCommands(context: PluginContext, target: Target) async throws -> [Command] {
-    let executablePath = try context.tool(named: LicenseViewPlugin.commandName).url
+#if canImport(PackagePlugin)
+  import PackagePlugin
 
-    guard
-      let command = buildCommands(
-        executablePath: executablePath,
-        workDirectory: context.pluginWorkDirectoryURL
-      )
-    else {
-      return []
+  extension LicenseViewPlugin: BuildToolPlugin {
+    func createBuildCommands(context: PluginContext, target: Target) async throws -> [Command] {
+      let executablePath = try context.tool(named: LicenseViewPlugin.commandName).url
+
+      guard
+        let command = buildCommands(
+          executablePath: executablePath,
+          workDirectory: context.pluginWorkDirectoryURL
+        )
+      else {
+        return []
+      }
+
+      return [command]
     }
-
-    return [command]
   }
-}
+#endif
 
 #if canImport(XcodeProjectPlugin)
   import XcodeProjectPlugin
