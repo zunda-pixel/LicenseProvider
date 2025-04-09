@@ -4,7 +4,7 @@ import Foundation
 struct LicenseViewPlugin {
   static let commandName = "LicenseProviderExec"
 
-  func sourcePackagesPath(workDirectory: URL) -> URL? {
+  func sourcePackagesPath(workDirectory: URL) -> URL {
     var workDirectory = workDirectory
 
     for _ in 0..<6 {
@@ -21,9 +21,7 @@ struct LicenseViewPlugin {
     let fileName = "LicenseProvider.swift"
 
     let output = workDirectory.appending(path: fileName)
-    guard let sourcePackages = sourcePackagesPath(workDirectory: workDirectory) else {
-      return nil
-    }
+    let sourcePackages = sourcePackagesPath(workDirectory: workDirectory)
 
     return .buildCommand(
       displayName: "LicenseProviderPlugin",
