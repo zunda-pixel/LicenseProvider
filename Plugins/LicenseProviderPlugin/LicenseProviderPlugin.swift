@@ -1,31 +1,30 @@
 import Foundation
-import PackagePlugin
 
 @main
 struct LicenseViewPlugin {
   static let commandName = "LicenseProviderExec"
 
-  func sourcePackagesPath(workDirectory: URL) -> URL? {
+  func sourcePackagesPath(workDirectory: URL) -> URL {
     var workDirectory = workDirectory
 
-    guard workDirectory.absoluteString.contains("SourcePackages") else {
-      return nil
+    for _ in 0..<6 {
+      workDirectory = workDirectory.deletingLastPathComponent()
     }
 
-    while workDirectory.lastPathComponent != "SourcePackages" {
-      workDirectory = workDirectory.deletingLastPathComponent()
+    if FileManager.default.fileExists(
+      atPath: workDirectory.appendingPathComponent("SourcePackages").path())
+    {
+      workDirectory.appendPathComponent("SourcePackages")
     }
 
     return workDirectory
   }
 
-  func buildCommands(executablePath: URL, workDirectory: URL) -> Command? {
+  func buildCommands(executablePath: URL, workDirectory: URL) -> Command {
     let fileName = "LicenseProvider.swift"
 
     let output = workDirectory.appending(path: fileName)
-    guard let sourcePackages = sourcePackagesPath(workDirectory: workDirectory) else {
-      return nil
-    }
+    let sourcePackages = sourcePackagesPath(workDirectory: workDirectory)
 
     return .buildCommand(
       displayName: "LicenseProviderPlugin",
@@ -39,22 +38,22 @@ struct LicenseViewPlugin {
   }
 }
 
-extension LicenseViewPlugin: BuildToolPlugin {
-  func createBuildCommands(context: PluginContext, target: Target) async throws -> [Command] {
-    let executablePath = try context.tool(named: LicenseViewPlugin.commandName).url
+#if canImport(PackagePlugin)
+  import PackagePlugin
 
-    guard
-      let command = buildCommands(
-        executablePath: executablePath,
-        workDirectory: context.pluginWorkDirectoryURL
-      )
-    else {
-      return []
+  extension LicenseViewPlugin: BuildToolPlugin {
+    func createBuildCommands(context: PluginContext, target: Target) async throws -> [Command] {
+      let executablePath = try context.tool(named: LicenseViewPlugin.commandName).url
+
+      return [
+        buildCommands(
+          executablePath: executablePath,
+          workDirectory: context.pluginWorkDirectoryURL
+        )
+      ]
     }
-
-    return [command]
   }
-}
+#endif
 
 #if canImport(XcodeProjectPlugin)
   import XcodeProjectPlugin
@@ -63,16 +62,12 @@ extension LicenseViewPlugin: BuildToolPlugin {
     func createBuildCommands(context: XcodePluginContext, target: XcodeTarget) throws -> [Command] {
       let executablePath = try context.tool(named: LicenseViewPlugin.commandName).url
 
-      guard
-        let command = buildCommands(
+      return [
+        buildCommands(
           executablePath: executablePath,
           workDirectory: context.pluginWorkDirectoryURL
         )
-      else {
-        return []
-      }
-
-      return [command]
+      ]
     }
   }
 #endif

@@ -3,12 +3,13 @@ name: CI
 on: pull_request
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     container: swift:latest
     steps:
     - uses: actions/checkout@v4
-    - run: swift build
+    - run: swift test
+      working-directory: Example
   lint:
     runs-on: ubuntu-latest
     container: swift:latest
