@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.2
 
 import PackageDescription
 
@@ -8,7 +8,7 @@ let package = Package(
     .macOS(.v11),
     .iOS(.v12),
     .tvOS(.v12),
-    .watchOS(.v4),
+    .watchOS(.v9),
     .macCatalyst(.v13),
     .visionOS(.v1),
   ],
