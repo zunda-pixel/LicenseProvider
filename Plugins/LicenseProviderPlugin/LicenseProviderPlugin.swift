@@ -20,12 +20,6 @@ struct LicenseViewPlugin {
     return workDirectory
   }
 
-  /// The scratch directory a project generator resolved its own packages into, if there is one.
-  ///
-  /// Tuist integrates the packages declared in `Tuist/Package.swift` itself and checks them out
-  /// into its own scratch directory rather than into the `SourcePackages` directory Xcode manages,
-  /// so those packages are invisible to a plugin that only looks at the latter. The scratch
-  /// directory has the same layout, so it can be read the same way.
   func generatorSourcePackagesPath(projectDirectory: URL) -> URL? {
     let candidates = [
       projectDirectory.appendingPathComponent("Tuist").appendingPathComponent(".build"),
