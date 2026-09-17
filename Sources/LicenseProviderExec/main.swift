@@ -54,17 +54,8 @@ func generateSourceCode(packages: [WorkSpacePackage: String]) -> String {
   return sourceCode
 }
 
-let sourcePackagesPath = URL(fileURLWithPath: CommandLine.arguments[2])
-
-let jsonData = try Data(
-  contentsOf: sourcePackagesPath.appendingPathComponent("workspace-state.json"))
-let workspace = try JSONDecoder().decode(WorkSpace.self, from: jsonData)
-
-var packages: [WorkSpacePackage: String] = [:]
-
-for package in workspace.packages {
-
-  let subPath: URL? =
+func checkoutDirectory(of package: WorkSpacePackage, in sourcePackagesPath: URL) -> URL? {
+  let directory: URL? =
     switch package.kind {
     case .localSourceControl(let location), .fileSystem(let location):
       location
@@ -76,22 +67,47 @@ for package in workspace.packages {
       nil
     }
 
-  guard let subPath else { continue }
+  return directory?.resolvingSymlinksInPath()
+}
 
-  let contents = try FileManager.default.contentsOfDirectory(
-    at: subPath,
-    includingPropertiesForKeys: nil
-  ).filter { path in
-    let pathWithoutExtension = path.deletingPathExtension()
+func licenses(inSourcePackagesAt sourcePackagesPath: URL) throws -> [WorkSpacePackage: String] {
+  let workspaceStatePath = sourcePackagesPath.appendingPathComponent("workspace-state.json")
 
-    return pathWithoutExtension.lastPathComponent.lowercased() == "license"
+  guard FileManager.default.fileExists(atPath: workspaceStatePath.path) else { return [:] }
+
+  let jsonData = try Data(contentsOf: workspaceStatePath)
+  let workspace = try JSONDecoder().decode(WorkSpace.self, from: jsonData)
+
+  var packages: [WorkSpacePackage: String] = [:]
+
+  for package in workspace.packages {
+    guard let directory = checkoutDirectory(of: package, in: sourcePackagesPath) else { continue }
+
+    let contents = try FileManager.default.contentsOfDirectory(
+      at: directory,
+      includingPropertiesForKeys: nil
+    ).filter { path in
+      let pathWithoutExtension = path.deletingPathExtension()
+
+      return pathWithoutExtension.lastPathComponent.lowercased() == "license"
+    }
+
+    if let content = contents.first {
+      let fileData = try Data(contentsOf: content)
+
+      packages[package] = String(decoding: fileData, as: UTF8.self)
+    }
   }
 
-  if let content = contents.first {
-    let fileData = try Data(contentsOf: content)
+  return packages
+}
 
-    packages[package] = String(decoding: fileData, as: UTF8.self)
-  }
+let sourcePackagesPaths = CommandLine.arguments.dropFirst(2).map { URL(fileURLWithPath: $0) }
+
+var packages: [WorkSpacePackage: String] = [:]
+
+for sourcePackagesPath in sourcePackagesPaths {
+  packages.merge(try licenses(inSourcePackagesAt: sourcePackagesPath)) { current, _ in current }
 }
 
 let sourceCode = generateSourceCode(packages: packages)

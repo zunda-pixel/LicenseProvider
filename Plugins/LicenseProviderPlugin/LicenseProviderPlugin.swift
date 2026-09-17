@@ -20,7 +20,23 @@ struct LicenseViewPlugin {
     return workDirectory
   }
 
-  func buildCommands(executablePath: URL, workDirectory: URL) -> Command {
+  func generatorSourcePackagesPath(projectDirectory: URL) -> URL? {
+    let candidates = [
+      projectDirectory.appendingPathComponent("Tuist").appendingPathComponent(".build"),
+      projectDirectory.appendingPathComponent(".build"),
+    ]
+
+    return candidates.first { candidate in
+      FileManager.default.fileExists(
+        atPath: candidate.appendingPathComponent("workspace-state.json").path())
+    }
+  }
+
+  func buildCommands(
+    executablePath: URL,
+    workDirectory: URL,
+    additionalSourcePackages: [URL] = []
+  ) -> Command {
     let fileName = "LicenseProvider.swift"
 
     let output = workDirectory.appending(path: fileName)
@@ -29,10 +45,7 @@ struct LicenseViewPlugin {
     return .buildCommand(
       displayName: "LicenseProviderPlugin",
       executable: executablePath,
-      arguments: [
-        output.path(),
-        sourcePackages.path(),
-      ],
+      arguments: [output.path(), sourcePackages.path()] + additionalSourcePackages.map(\.path),
       outputFiles: [output]
     )
   }
@@ -65,7 +78,10 @@ struct LicenseViewPlugin {
       return [
         buildCommands(
           executablePath: executablePath,
-          workDirectory: context.pluginWorkDirectoryURL
+          workDirectory: context.pluginWorkDirectoryURL,
+          additionalSourcePackages: [
+            generatorSourcePackagesPath(projectDirectory: context.xcodeProject.directoryURL)
+          ].compactMap { $0 }
         )
       ]
     }
