@@ -54,12 +54,6 @@ func generateSourceCode(packages: [WorkSpacePackage: String]) -> String {
   return sourceCode
 }
 
-/// The directory holding a package's checked out sources.
-///
-/// `appendingPathComponent` only marks a URL as a directory when the path exists as one, and a
-/// checkout is a symlink into the shared source cache whenever SwiftPM is run with one. The
-/// resulting URL then has no trailing slash and `contentsOfDirectory(at:)` fails with `ENOTDIR`,
-/// so symlinks are resolved before the directory is read.
 func checkoutDirectory(of package: WorkSpacePackage, in sourcePackagesPath: URL) -> URL? {
   let directory: URL? =
     switch package.kind {
