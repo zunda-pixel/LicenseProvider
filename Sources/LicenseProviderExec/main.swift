@@ -102,9 +102,6 @@ func licenses(inSourcePackagesAt sourcePackagesPath: URL) throws -> [WorkSpacePa
   return packages
 }
 
-// A build can draw its packages from more than one workspace: Tuist, for instance, resolves the
-// packages it integrates itself into its own scratch directory, separately from the ones Xcode
-// resolves into `SourcePackages`. Every path given is read and the results merged.
 let sourcePackagesPaths = CommandLine.arguments.dropFirst(2).map { URL(fileURLWithPath: $0) }
 
 var packages: [WorkSpacePackage: String] = [:]
