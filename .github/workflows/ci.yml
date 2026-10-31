@@ -8,6 +8,8 @@ jobs:
     container: swift:latest
     steps:
     - uses: actions/checkout@v7.0.1
+    - run: apt-get update && apt-get install -y python3
+    - run: python3 Tests/test_generation.py
     - run: swift test
       working-directory: Example
   lint:
